@@ -67,7 +67,7 @@ const RecentCurrenciesTo = ({
 }: CurrencyProps) => {
   useEffect(() => {
     setData(DUMMY_CURR);
-    console.log(currencyList);
+    // console.log(currencyList);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

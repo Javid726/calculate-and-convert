@@ -7,9 +7,12 @@ import InputFieldTo from "./InputFieldTo";
 import InputFieldFrom from "./InputFieldFrom";
 import ConvertButton from "./ConvertButton";
 import { VscArrowSwap } from "react-icons/vsc";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useCurrencyList from "./useCurrencyList";
-import useCurrency from "./useCurrency";
+// import useCurrency from "./useCurrency";
+
+import { useQuery } from "@tanstack/react-query";
+import fetchCurrency from "./fetchCurrency";
 
 const CurrencyEl = styled.div`
   background-color: #d8eefe;
@@ -32,15 +35,24 @@ const ArrowSwapContainer = styled.div`
 
 const Currency = () => {
   const [currencyList, status] = useCurrencyList();
-  // const [currency, status] = useCurrency();
   const [fromValue, setFromValue] = useState("");
   const [toValue, setToValue] = useState("");
   const [fromCurrency, setFromCurrency] = useState("");
   const [toCurrency, setToCurrency] = useState("");
+  const [currencyValue, setCurrencyValue] = useState(0);
   const [recentDataFrom, setRecentDataFrom] =
     useState<{ id: number; currency: string; isActive: boolean }[]>();
   const [recentDataTo, setRecentDataTo] =
     useState<{ id: number; currency: string; isActive: boolean }[]>();
+
+  const results = useQuery(
+    [
+      "currency",
+      { to: toCurrency, from: fromCurrency, currency: currencyValue },
+    ],
+    fetchCurrency
+  );
+  // const [currency] = useCurrency(toCurrency, fromCurrency, +fromValue);
 
   function getFromValue(value: string) {
     setFromValue(value);
@@ -55,15 +67,31 @@ const Currency = () => {
     setRecentDataFrom(recentDataTo);
     setRecentDataTo(recentDataFrom);
 
-    console.log("From: " + fromValue);
-    console.log("To: " + toValue);
-    console.log("Status: " + status);
+    // console.log("From: " + fromCurrency);
+    // console.log("To: " + toCurrency);
+    // console.log("Status: " + status);
   }
 
-  function setConvertedCurrencies() {
+  function setConvertedCurrencies(): void {
     let fromCurrency = recentDataFrom?.find((el) => el.isActive === true);
     let toCurrency = recentDataTo?.find((el) => el.isActive === true);
+
+    if (fromCurrency) {
+      setFromCurrency(fromCurrency.currency);
+    }
+
+    if (toCurrency) {
+      setToCurrency(toCurrency.currency);
+    }
+
+    setCurrencyValue(+fromValue);
+
+    console.log(results.data);
   }
+
+  useEffect(() => {
+    setToValue(results?.data?.result);
+  }, [results?.data]);
 
   // Lifting recent currencies
   function handleActiveCurrency(e: any, data: any, setData: any) {
@@ -129,9 +157,7 @@ const Currency = () => {
             <InputFieldTo getToValue={getToValue} value={toValue} />
           </div>
         </div>
-        <ConvertButton onClick={() => console.log(recentDataFrom)}>
-          Convert
-        </ConvertButton>
+        <ConvertButton onClick={setConvertedCurrencies}>Convert</ConvertButton>
       </CurrencyContent>
     </CurrencyEl>
   );
