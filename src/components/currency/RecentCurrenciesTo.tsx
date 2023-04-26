@@ -44,9 +44,13 @@ const RecentCurrenciesEl = styled.ul`
 
 type CurrencyProps = {
   currencyList: {};
-  handleActiveCurrency: any;
-  data: any;
-  setData: any;
+  handleActiveCurrency: React.MouseEventHandler<HTMLLIElement>;
+  data: { id: number; currency: string; isActive: boolean }[] | undefined;
+  setData: React.Dispatch<
+    React.SetStateAction<
+      { id: number; currency: string; isActive: boolean }[] | undefined
+    >
+  >;
 };
 
 // type RecentCurrencies = {

@@ -148,9 +148,9 @@ const Currency = () => {
             </h3>
             <RecentCurrenciesTo
               currencyList={currencyList}
-              handleActiveCurrency={(e: any) =>
-                handleActiveCurrency(e, recentDataTo, setRecentDataTo)
-              }
+              handleActiveCurrency={(
+                e: React.MouseEvent<HTMLLIElement, MouseEvent>
+              ) => handleActiveCurrency(e, recentDataTo, setRecentDataTo)}
               data={recentDataTo}
               setData={setRecentDataTo}
             />
