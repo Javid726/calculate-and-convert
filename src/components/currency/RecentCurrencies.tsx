@@ -1,7 +1,7 @@
 import RecentCurrencyItem from "./RecentCurrencyItem";
 import styled from "styled-components";
 import { useEffect } from "react";
-import fetchCurrency from "./fetchCurrency";
+// import fetchCurrency from "./fetchCurrency";
 
 const DUMMY_CURR = [
   {

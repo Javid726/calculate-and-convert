@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import fetchCurrencyList from "./fetchCurrencyList";
+import fetchCurrencyList from "../fetchCurrencyList";
 
 export default function useCurrencyList() {
   const results = useQuery(["currencyList"], fetchCurrencyList);

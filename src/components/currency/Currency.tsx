@@ -8,7 +8,8 @@ import InputFieldFrom from "./InputFieldFrom";
 import ConvertButton from "./ConvertButton";
 import { VscArrowSwap } from "react-icons/vsc";
 import { useEffect, useState } from "react";
-import useCurrencyList from "./useCurrencyList";
+import useCurrencyList from "./hooks/useCurrencyList";
+// import { UseQueryResult } from "@tanstack/react-query";
 // import useCurrency from "./useCurrency";
 
 import { useQuery } from "@tanstack/react-query";
@@ -34,7 +35,7 @@ const ArrowSwapContainer = styled.div`
 `;
 
 const Currency = () => {
-  const [currencyList, status] = useCurrencyList();
+  const [currencyList] = useCurrencyList();
   const [fromValue, setFromValue] = useState("");
   const [toValue, setToValue] = useState("");
   const [fromCurrency, setFromCurrency] = useState("");
@@ -66,10 +67,6 @@ const Currency = () => {
     setToValue("");
     setRecentDataFrom(recentDataTo);
     setRecentDataTo(recentDataFrom);
-
-    // console.log("From: " + fromCurrency);
-    // console.log("To: " + toCurrency);
-    // console.log("Status: " + status);
   }
 
   function setConvertedCurrencies(): void {
@@ -85,18 +82,18 @@ const Currency = () => {
     }
 
     setCurrencyValue(+fromValue);
-
-    console.log(results.data);
   }
 
   useEffect(() => {
-    setToValue(results?.data?.result);
+    if (results.isSuccess) {
+      setToValue(results?.data?.result);
+    }
+    // console.log(results);
   }, [results?.data]);
 
   // Lifting recent currencies
   function handleActiveCurrency(e: any, data: any, setData: any) {
     const tempArr = [];
-    console.log("here we go");
 
     const target = Number(e.target.id);
     const selectedCurrency = data && data.find((el: any) => el.id === target);

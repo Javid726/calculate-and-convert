@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import fetchCurrency from "./fetchCurrency";
+import fetchCurrency from "../fetchCurrency";
 
 export default function useCurrency(
   to: string,
